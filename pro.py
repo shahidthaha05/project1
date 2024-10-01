@@ -18,7 +18,7 @@ def register():
         username=email
         phone=int(input("enter the no :"))
         password=str(input("enter password :"))
-        users.append({'name':name,'id':id,'email':email,'phone':phone,'books':[],'username':username,'password':password})
+        users.append({'name':name,'id':id,'email':email,'phone':phone,'veh':[],'username':username,'password':password})
 
 def login():
     uname=input("enter uname : ")
@@ -33,35 +33,42 @@ def login():
             cust=i
     return f,cust
 
-def add_book():
+def add_veh():
     if len(veh)==0:
         id=101
     else:
         id=veh[-1]['id']+1
     f=0
-    for i in lib:
+    for i in veh:
         if i['id']==id:
             f=1
-            add_book()
+            add_veh()
     if f==0:
-        name=str(input("enter the book name : "))
-        price=int(input("enter the price : "))
+        name=str(input("enter the  name : "))
+        brand=str(input("enter the brand : "))
+        model=int(input("enter the model : "))
+        fueltype=str(input("enter the fueltype : "))
+        mileage=int(input("enter the mileage : "))
+        insurance=int(input("enter insurance : "))
         stock=int(input("enter the stock : "))
-        veh.append({'id':id,'name':name,'price':price,'stock':stock})
+        veh.append({'name':name,'id':id,'brand':brand,'model':model,'fueltype':fueltype,'mileage':mileage,'insurance':insurance,'stock':stock})
 
-def view_book():
+
+def view_veh():
     for i in veh:
         print(i)
 
-def update_book():
+def update_veh():
     id=int(input("enter the id : "))
     f=0
     for i in veh:
         if i['id']==id:
             f=1
-            price=int(input("enter the price : "))
-            stock=int(input("enter the stock : "))
-            i['price']=price
+            fueltype=str(input("enter the fueltype : "))
+            insurance=int(input("enter the insurance : "))
+            stock=int(input("enter the stock"))
+            i['fueltype']=fueltype
+            i['insurance']=insurance
             i['stock']=stock
     if f==0:
         print('invalid id')
@@ -93,33 +100,21 @@ def update_pro(cust):
     cust['name']=name
     cust['phone']=phone
     
-def lend_book(cust):
+def buy_veh(cust):
     id=int(input("enter the id : "))
     f=0
     for i in veh:
         if i['id']==id:
             f=1
             i['stock']-=1
-            cust['books'].append(id)
-            print('book added')
+            cust['veh'].append(id)
+            print('veh added')
     if f==0:
         print("invalid id")
 
-def return_book(cust):
-    id=int(input("enter the id : "))
-    f=0
-    for i in veh:
-        if i['id']==id and id in cust['books']:
-            f=1
-            i['stock']+=1
-            cust['books'].remove(id)
-            print('book returned')
-    if f==0:
-        print('invalid id')
 
-
-def books_in_hand(cust):
-    print(cust['books'])
+def veh_in_hand(cust):
+    print(cust['veh'])
 
 while True:
     print('''
@@ -135,20 +130,20 @@ while True:
         if f==1:
             while True:
                 print('''
-                1.add book
-                2.view book
-                3.update books
+                1.add veh
+                2.view veh
+                3.update veh
                 4.delete
                 5.view user
                 6.exit
                 ''')
                 sub_choice=int(input("enter the choice : "))
                 if sub_choice==1:
-                    add_book()
+                    add_veh()
                 elif sub_choice==2:
-                    view_book()
+                    view_veh()
                 elif sub_choice==3:
-                    update_book()
+                    update_veh()
                 elif sub_choice==4:
                     delete()
                 elif sub_choice==5:
@@ -161,27 +156,24 @@ while True:
             while True:
                 print('''
                 1.view profile
-                2.view book
+                2.view veh
                 3.update profile
-                4.lend book
-                5.return book
-                6.books in hand
-                7.exit
+                4.buy veh
+                5.veh in hand
+                6.exit
                 ''')
                 sub_ch=int(input("enter the choice : "))
                 if sub_ch==1:
                     view_profile(cust)
                 elif sub_ch==2:
-                    view_book()
+                    view_veh()
                 elif sub_ch==3:
                     update_pro(cust)
                 elif sub_ch==4:
-                    lend_book(cust)
+                    buy_veh(cust)
                 elif sub_ch==5:
-                    return_book(cust)
+                    veh_in_hand(cust)
                 elif sub_ch==6:
-                    books_in_hand(cust)
-                elif sub_ch==7:
                     break
                 else:
                     print("invalid choice")
